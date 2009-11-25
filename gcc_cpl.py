@@ -126,24 +126,35 @@ lex.lex(reflags=re.U)
 ################################### STARTING PARSE ###################################
 def p_statement_nBegin(t):
 	'''statement : BEGIN nContent nStructure END'''
+	t[0] = '''<HTML>
+	<HEAD><meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	 <TITLE> Untitled </TITLE>
+	 <link rel="stylesheet" type="text/css" href="style/style.css" media="screen" />
+	 </HEAD>''' + t[2] + '''</HTML>'''
 	#TODO: Complete this function
 
 #### CONTENT DEFINES ####
 def p_nContent(t):
 	'''nContent : CONTENT LBRACE nNewspaper blocks RBRACE'''
+	t[0] = '<BODY>' + t[3] + '</BODY>'
 	#TODO: Complete this function
 
 def p_nNewspaper(t):
 	'''nNewspaper : NEWSPAPER LBRACE nNewspaper_block RBRACE'''
+	t[0] = t[3]
 	#TODO: Complete this function
 
 def p_nNewspaper_block(t):
 	'''nNewspaper_block : nn_block nTitle nn_block'''
+	t[0] = '<h1>' '</h1>'
 	#TODO: Complete this function
 
 def p_nn_block(t):
 	'''nn_block : nDate
 				| empty'''
+	if (t[1]):
+		t[0] = '<h3>' + t[1] + '</h3>'
+		
 	#TODO: Complete this function
 
 def p_blocks(t):
@@ -179,6 +190,7 @@ def p_nTitle(t):
 
 def p_nDate(t):
 	'''nDate : DATE COLON noWikiText'''
+	t[0] = t[3]
 	#TODO: Complete this function
 
 def p_nAbstract(t):
@@ -249,6 +261,7 @@ def p_noWikiText(t):
 
 def p_link(t):
 	'''link : LBRACK URL PIPE noWikiText RBRACK'''
+	t[0] = '<a href="' + t[2] +  '"></a>'
 	#TODO: Complete this function
 
 def p_session(t):
@@ -349,5 +362,6 @@ if __name__ == '__main__':
 
 	# Execute parse
 	yacc.yacc()
-	yacc.parse(open(f).read().decode('utf-8'))
+	result = yacc.parse(open(f).read().decode('utf-8'))
+	print result
 ################################### FINISHED PARSE ###################################
