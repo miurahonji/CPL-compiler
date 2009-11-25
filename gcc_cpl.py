@@ -3,12 +3,6 @@
 
 import re, sys
 
-if __name__ == '__main__':
-	if len(sys.argv) >= 2 and sys.argv[1] == '--debug':
-		debug = True
-	else:
-		debug = False
-
 #################################### STARTING LEX ####################################
 reserved = {
 	'begin': 'BEGIN',
@@ -126,28 +120,10 @@ def t_error(t):
 import ply.lex as lex
 lex.lex(reflags=re.U)
 
-# # To debug lexic
-if debug:
-	lexer = lex.lex(reflags=re.U)
-	lexer.input(open('exemplo.cpl').read().decode('utf-8'))
-	while True:
-		tok = lexer.token()
-		if not tok: break
-		print tok
 #################################### FINISHED LEX ####################################
 
 
 ################################### STARTING PARSE ###################################
-# # Parsing rules
-# precedence = (
-#     ('left','PLUS','MINUS'),
-#     ('left','TIMES','DIVIDE'),
-#     ('right','UMINUS'),
-#     )
-# 
-# # dictionary of names
-# names = { }
-
 def p_statement_nBegin(t):
 	'''statement : BEGIN nContent nStructure END'''
 	#TODO: Complete this function
@@ -162,23 +138,24 @@ def p_nNewspaper(t):
 	#TODO: Complete this function
 
 def p_nNewspaper_block(t):
-	'''nNewspaper_block : nNewspaper_block nn_block
-				| nn_block'''
+	'''nNewspaper_block : nn_block nTitle nn_block'''
 	#TODO: Complete this function
 
 def p_nn_block(t):
-	'''nn_block : nTitle
-				| nDate '''
+	'''nn_block : nDate
+				| empty'''
 	#TODO: Complete this function
 
 def p_blocks(t):
 	'''blocks : blocks block
-				| block'''
+				| block
+				| empty'''
 	#TODO: Complete this function
 
 def p_block(t):
 	'''block : NAME LBRACE cblock RBRACE'''
 	#TODO: Complete this function
+	#TODO: Verify if cblock have nTitle and nAbstract
 
 def p_cblock(t):
 	'''cblock : cblock ccblock 
@@ -341,7 +318,36 @@ def p_ditem(t):
 def p_error(t):
 	print "Syntax error at '%s'" % t.value
 
+def p_empty(t):
+	'''empty :'''
+	pass
+
+
 import ply.yacc as yacc
-yacc.yacc()
-yacc.parse(open('exemplo.cpl').read().decode('utf-8'))
+if __name__ == '__main__':
+	# Parsing options
+	debug = False
+	f = 'exemplo.cpl'
+	while len(sys.argv) > 1:
+		op = sys.argv.pop(1).strip()
+		if op == '--debug':
+			debug = True
+		elif op == '-f':
+			if len(sys.argv) < 2:
+				print 'Usage %s -f filename' % sys.argv[0]
+				sys.exit(1)
+			f = sys.argv.pop(1)
+
+	# To debug lexic
+	if debug:
+		lexer = lex.lex(reflags=re.U)
+		lexer.input(open(f).read().decode('utf-8'))
+		while True:
+			tok = lexer.token()
+			if not tok: break
+			print tok
+
+	# Execute parse
+	yacc.yacc()
+	yacc.parse(open(f).read().decode('utf-8'))
 ################################### FINISHED PARSE ###################################
