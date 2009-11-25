@@ -1,7 +1,13 @@
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
 
-import re
+import re, sys
+
+if __name__ == '__main__':
+	if len(sys.argv) >= 2 and sys.argv[1] == '--debug':
+		debug = True
+	else:
+		debug = False
 
 #################################### STARTING LEX ####################################
 reserved = {
@@ -121,12 +127,13 @@ import ply.lex as lex
 lex.lex(reflags=re.U)
 
 # # To debug lexic
-# lexer = lex.lex(reflags=re.U)
-# lexer.input(open('exemplo.cpl').read().decode('utf-8'))
-# while True:
-# 	tok = lexer.token()
-# 	if not tok: break
-# 	print tok
+if debug:
+	lexer = lex.lex(reflags=re.U)
+	lexer.input(open('exemplo.cpl').read().decode('utf-8'))
+	while True:
+		tok = lexer.token()
+		if not tok: break
+		print tok
 #################################### FINISHED LEX ####################################
 
 
@@ -151,7 +158,17 @@ def p_nContent(t):
 	#TODO: Complete this function
 
 def p_nNewspaper(t):
-	'''nNewspaper : NEWSPAPER LBRACE nTitle nDate RBRACE'''
+	'''nNewspaper : NEWSPAPER LBRACE nNewspaper_block RBRACE'''
+	#TODO: Complete this function
+
+def p_nNewspaper_block(t):
+	'''nNewspaper_block : nNewspaper_block nn_block
+				| nn_block'''
+	#TODO: Complete this function
+
+def p_nn_block(t):
+	'''nn_block : nTitle
+				| nDate '''
 	#TODO: Complete this function
 
 def p_blocks(t):
@@ -322,7 +339,7 @@ def p_ditem(t):
 	#TODO: Complete this function
 
 def p_error(t):
-    print "Syntax error at '%s'" % t.value
+	print "Syntax error at '%s'" % t.value
 
 import ply.yacc as yacc
 yacc.yacc()
