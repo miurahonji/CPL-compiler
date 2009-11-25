@@ -1,0 +1,10 @@
+1) Adicionar uma palavra reservada 'default' para importar informações de um
+outro arquivo.
+	Caracteristica:
+	- O arquivo importado possui a estrura definida pelo cpl.
+	- O arquivo que importou pode sobreescrever informações do arquivo default
+	  utilizando o mesmo nome para definir o objeto (como sobreposição de função
+	  em liguagens OO).
+	- Todas as outras informações que não foram sobreescritas são mantidas do
+	  mesmo jeito, assim podemos fazer modificações pontuais sem a necessidade
+	  de ler o código inteiro ou sem abrir o arquivo default.

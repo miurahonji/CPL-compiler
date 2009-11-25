@@ -1,0 +1,143 @@
+//Este arquivo que especifica, através de exemplos, a linguagem chamada "Content Publication Language (CPL)", voltada para a publicação de conteúdo
+//em um site de notícias
+//Todos os caracteres após um "//" são comentários.
+
+//Segue uma lista de todas as palavras reservadas da linguagem:
+//begin, end, content, newspaper, title, date, abstract, text, source, image, author, structure, format, item
+
+//Um programa CPL sempre inicia com um begin e termina em um end
+//Ele deve conter duas seções de código: 
+//  -- content: define os objetos que guardam o conteúdo. Os campos de cada objeto estão exemplificados abaixo.
+//  -- structure: define a estrutura da página.
+begin
+
+content {
+
+	//Newspaper é um nome reservado. Este objeto é obrigatório para todo programa e contém os dados a serem usados para fazer o cabeçalho da página.
+	//Campos Obrigatórios: 
+	//   --title: título do jornal
+	//Campos opcionais:
+	//   --date: data do jornal
+	newspaper{ 
+		title: SEMPRE ONLINE. O jornal em tempo real
+		date: 27 de Outubro de 2009
+	}
+
+	//Qualquer outro objeto que não seja "newspaper" são notícias para serem colocadas na página principal do site.
+	//O nome do objeto DEVE obedecer à seguinte regra de formação: 
+	//   1. Deve iniciar com uma letra
+	//   2. Deve conter apenas letras, números ou o caractere "_" (underscore/sublinhado)
+	//   3. A linguagem não faz diferença entre maiúsculas e minúsculas, isto é, news1 e NEWs1 são o mesmo nome em CPL.
+	//Campos Obrigatórios: 
+	//   --title: título da manchete
+	//   --abstract: resumo da notícia
+	//Campos opcionais:
+	//   --image: uma foto associada a noticia
+	//   --source: a fonte de onde foi retirada a noticia. Deve ser mostrada somente na exibição da noticia completa
+	//   --date: data da noticia
+	//   --author: autor da noticia
+	//   --text: Texto completo da noticia. Quando este campo é fornecido, o título da notícia deve ser exibido no site como
+	//           um link que, ao ser clicado, mostra o texto completo da noticia. Na página inicial do site sempre aparece
+	//           apenas o abstract.
+	headline1{
+		title: Virada Cultural Paulista tem programação até as 18h deste domingo
+
+		image: ./virada.jpg  
+
+		abstract: A Virada Cultural Paulista, que se iniciou ontem em 20 cidades do Estado, prossegue neste domingo 
+	 	até as 18h. Ao todo, segundo o governo de São Paulo, são mais de 500 apresentações nas 24 horas de programação.
+	        A lista de eventos inclui exibições de peças de teatro, dança, música e cinema. 
+		O governo espera 1 milhão de pessoas nas 24 horas de atividades. Os espetáculos têm entrada 
+		franca e as unidades do Sesc e do Sesi têm programação integrada ao evento.
+		Santa Bárbara d'Oeste e Mogi Guaçu participam do evento pela primeira vez. Araraquara, Araçatuba, Assis, Bauru, Caraguatatuba, 
+		Franca, Indaiatuba, Jundiaí, Marília, Mogi das Cruzes, Presidente Prudente, Ribeirão Preto, Santos, São Bernardo do Campo, 
+		São José do Rio Preto, São João da Boa Vista, São José dos Campos e Sorocaba são as outras cidades.
+
+		//Este é o campo que contém o texto completo da notícia. Ele deve ser exibido caso o usuário clique no título da manchete.
+		//É possível usar mecanismos de formatação, iguais àqueles da linguagem da wikipedia (http://pt.wikipedia.org/wiki/Ajuda:Guia_de_edição/Formatação#Os_c.C3.B3digos_wiki_para_formatar_artigos). No exemplo abaixo temos:
+		//link: [url | texto exibido]
+		//Parágrafo de titulo: === texto ===
+		//Recuo de parágrafo: o caractere ":" indica quantos recuos. Veja o resultado da renderização e o código HTML deste texto no exemplo em HTML fornecido.
+		text: 
+		A [http://viradacultural.org | Virada Cultural Paulista], que se iniciou ontem em 20 cidades do Estado, prossegue neste domingo 
+		até as 18h. Ao todo, segundo o governo de São Paulo, são mais de 500 apresentações nas 24 horas de programação.
+		A lista de eventos inclui exibições de peças de teatro, dança, música e cinema. 
+		O governo espera 1 milhão de pessoas nas 24 horas de atividades. Os espetáculos têm entrada 
+		franca e as unidades do Sesc e do Sesi têm programação integrada ao evento. 
+	
+		=== A ultima Virada Cultural 2009 terminou com público estimado em 4 milhões ===
+	
+		: Cerca de 800 atrações se apresentaram ao longo das 24 horas de performances musicais e intervenções artísticas para um público estimado
+		 pela organização do evento em 4 milhões de pessoas, entre as platéias dos 42 Centros Educacionais Unificados, unidades da rede SESC,
+		 museus administrados pela Secretaria de Estado da Cultura, Teatro Municipal de São Paulo e palcos de rua.
+		: Ao final do show, Maria Rita declarou: "Estou em estado de plenitude, absoluta graça, intensa alegria, 'quicando' pela casa. 
+		É uma alegria e satisfação doida. Um presente de São Paulo."
+		::: Além das apresentações, houve momentos memoráveis como a participação do cantor Zeca Baleiro no show de Odair José no Largo do Arouche,
+		 interpretando entre outras canções, Eu, você e a praça, uma das mais conhecidas na voz do cantor romântico.
+		 Baleiro se apresentou ao meio-dia no palco principal com grande público e seguiu para uma participação especial no palco do Largo do Arouche.
+        
+
+		author: Fulano de Tal
+		source: Central de Informações da Virada Cultural
+	}	
+
+
+	headline2{
+		title: PSDB diz que discussão de prévias partidárias está mantida
+		abstract: 
+		O presidente nacional do PSDB, senador Sérgio Guerra (PSDB-PE), afirmou neste domingo que o partido mantém as discussões para a realização de uma consulta interna a fim de escolher o candidato do partido que disputará a Presidência em 2010.
+
+		text:
+O presidente nacional do PSDB, senador Sérgio Guerra (PSDB-PE), afirmou neste domingo que o partido mantém as discussões para a realização de uma consulta interna a fim de escolher o candidato do partido que disputará a Presidência em 2010.  Ele diz que os governadores Aécio Neves (PSDB) e José Serra (PSDB) --os presidenciáveis tucanos para 2010--ainda buscam um entendimento e que existe a possibilidade de os dois formarem uma "chapa pura". "O que está certo é que os dois vão colaborar ao longo desse semestre e do próximo semestre. E, se não tiver acordo, em janeiro ou em fevereiro tem prévias. Mas ainda não há nenhuma composição desse tipo", afirmou o senador. 
+	
+		source: FolhaOnLine.com
+	}
+
+	Noticia3{
+		title: Xuxa troca Som Livre por Sony
+		image: ./xuxa.jpg  
+		abstract: 
+	
+		A gravadora, que acompanha a "rainha dos baixinhos" há 23 anos, será trocada pela Sony Music, 
+		informa Lauro Jardim, na coluna Radar publicada na edição desta semana da revista "Veja". 
+		Conforme a publicação, o primeiro CD de Xuxa na nova gravadora sai em setembro. 
+		O último álbum da cantora, "Xuxa só para Baixinhos 8", vendeu 1 milhão de cópias desde seu lançamento, 
+		no ano passado. Ao todo, Xuxa vendeu 45 milhões de discos no período em que esteve na Som Livre. 
+		O contrato inicial assinado com a Sony é de dois anos. 
+	
+		source: http://www.folhaOnLine.com
+	}
+}
+
+structure {
+	format{
+		col: 3 //  número de colunas do jornal
+		border: 0 //Largura da borda entre colunas
+	}
+		
+	//define um item que ocupará espaço da coluna 1 até a coluna 4 (4 colunas).
+	item[1:2]{
+		headline1.title	//Mostra o campo title do objeto headline1 neste item
+		headline1.image //Mostra o campo image do objeto headline1 neste item
+		//Mostra o campo abstract do objeto headline1 neste item
+		headline1.abstract 
+	}
+	
+	//define um item que ocupará espaço apenas da coluna 1.
+	item[1]{
+		headline2.title
+		headline2.abstract
+		headline2.source
+	}
+
+	//define um item que ocupará espaço apenas da coluna 2.
+	item[2]{
+		Noticia3.title
+		Noticia3.source
+		Noticia3.image
+		Noticia3.abstract
+	}
+
+}
+
+end
