@@ -214,7 +214,8 @@ def p_nImage(t):
 	'''nImage : IMAGE COLON POINT BAR noWikiText POINT PHOTO_EXT'''
 	t[0] = dict()
 	t[0]['type'] = 'image'
-	t[0]['value'] = (t[3] + t[4] + t[5] + t[6] + t[7]).replace(' ','')
+	t[0]['value'] = (t[3] + t[4] + '%s' + t[6] + t[7]).replace(' ','')
+	t[0]['value'] = t[0]['value'] % t[5].strip()
 
 def p_nSource(t):
 	'''nSource : SOURCE COLON noWikiText
