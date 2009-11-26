@@ -126,6 +126,8 @@ lex.lex(reflags=re.U)
 ################################### STARTING PARSE ###################################
 def p_statement_nBegin(t):
 	'''statement : BEGIN nContent nStructure END'''
+	# nContent is a dictionary with newspaper and blocks key
+	# nStructure is a dictionary with format and items key
 	t[0] = '''<HTML>
 	<HEAD><meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	 <TITLE>%s</TITLE>
@@ -306,38 +308,50 @@ def p_nIndent(t):
 #### STRUCTURE DEFINE ####
 def p_nStructure(t):
 	'''nStructure : STRUCTURE LBRACE nFormat nItems RBRACE'''
-	#TODO: Complete this function
+	# nFormat: return a dictionary with information about col and border
+	# nItems return a list with all itens (each item is a dictionary that have information about item)
+	t[0] = dict()
+	t[0]['format'] = t[3]
+	t[0]['items'] = t[4]
 
 def p_nFormat(t):
 	'''nFormat : FORMAT LBRACE nCol nBorder RBRACE'''
-	#TODO: Complete this function
+	t[0] = dict()
+	t[0]['col'] = t[3]
+	t[0]['border'] = t[4]
 
 def p_nCol(t):
 	'''nCol : COL COLON NUMBER'''
-	#TODO: Complete this function
+	t[0] = t[3]
 
 def p_nBorder(t):
 	'''nBorder : BORDER COLON NUMBER'''
-	#TODO: Complete this function
+	t[0] = t[3]
 
 def p_nItems(t):
 	'''nItems : nItems nItem
 				| nItem '''
-	#TODO: Complete this function
+	if len(t) == 3 and t[2]:
+		t[1].extend(t[2])
+	t[0] = t[1]
 
 def p_nItem(t):
 	'''nItem : ITEM LBRACK range RBRACK LBRACE define_item RBRACE'''
-	#TODO: Complete this function
+	item = dict()
+	item['range'] = t[3]
+	item['define'] = t[6]
 
 def p_range(t):
 	'''range : NUMBER COLON NUMBER
 				| NUMBER'''
-	#TODO: Complete this function
+	t[0] = dict()
+	t[0]['start'] = t[1]
+	t[0]['end'] = t[3] if len(t) == 4 else t[1]
 
 def p_define_item(t):
 	'''define_item : define_item ditem
 					| ditem'''
-	#TODO: Complete this function
+	a
 
 def p_ditem(t):
 	'''ditem : NAME POINT TITLE
