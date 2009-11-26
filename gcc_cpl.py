@@ -131,47 +131,44 @@ def p_statement_nBegin(t):
 	 <TITLE> Untitled </TITLE>
 	 <link rel="stylesheet" type="text/css" href="style/style.css" media="screen" />
 	 </HEAD>''' + t[2] + '''</HTML>'''
-	#TODO: Complete this function
 
 #### CONTENT DEFINES ####
 def p_nContent(t):
 	'''nContent : CONTENT LBRACE nNewspaper blocks RBRACE'''
 	t[0] = '<BODY>' + t[3] + '</BODY>'
-	#TODO: Complete this function
 
 def p_nNewspaper(t):
 	'''nNewspaper : NEWSPAPER LBRACE nNewspaper_block RBRACE'''
 	t[0] = t[3]
-	#TODO: Complete this function
 
 def p_nNewspaper_block(t):
 	'''nNewspaper_block : nn_block nTitle nn_block'''
-	t[0] = '<h1>' '</h1>'
-	#TODO: Complete this function
+	string = '<div id="header"><div id="logo"> <h1><a><span>%s</span></a></h1><p>%s</p></div></div>'
+	if (t[1]):
+		t[0] = string % (t[2], t[1])
+	else:
+		t[0] = string % (t[2], t[3])
 
 def p_nn_block(t):
 	'''nn_block : nDate
 				| empty'''
-	if (t[1]):
-		t[0] = '<h3>' + t[1] + '</h3>'
-		
-	#TODO: Complete this function
+	t[0] = t[1] if t[1] else ''
 
 def p_blocks(t):
 	'''blocks : blocks block
 				| block
 				| empty'''
-	#TODO: Complete this function
+	t[0] = t[1] + t[2] if len(t) == 3 else t[1]
 
 def p_block(t):
 	'''block : NAME LBRACE cblock RBRACE'''
-	#TODO: Complete this function
+	t[0] = t[3]
 	#TODO: Verify if cblock have nTitle and nAbstract
 
 def p_cblock(t):
 	'''cblock : cblock ccblock 
 				| ccblock'''
-	#TODO: Complete this function
+	t[0] = t[1] if len(t) == 2 else t[1] + t[2]
 
 def p_ccblock(t):
 	'''ccblock :  nTitle
@@ -182,11 +179,11 @@ def p_ccblock(t):
 				| nAuthor
 				| nText
 				'''
-	#TODO: Complete this function
+	t[0] = t[1]
 
 def p_nTitle(t):
 	'''nTitle : TITLE COLON noWikiText'''
-	#TODO: Complete this function
+	t[0] = t[3]
 
 def p_nDate(t):
 	'''nDate : DATE COLON noWikiText'''
@@ -195,24 +192,24 @@ def p_nDate(t):
 
 def p_nAbstract(t):
 	'''nAbstract : ABSTRACT COLON noWikiText'''
-	#TODO: Complete this function
+	t[0] = t[3]
 
 def p_nImage(t):
 	'''nImage : IMAGE COLON POINT BAR noWikiText POINT PHOTO_EXT'''
-	#TODO: Complete this function
+	t[0] = t[3] + t[4] + t[5] + t[6] + t[7]
 
 def p_nSource(t):
 	'''nSource : SOURCE COLON noWikiText
 				| SOURCE COLON URL'''
-	#TODO: Complete this function
+	t[0] = t[3]
 
 def p_nAuthor(t):
 	'''nAuthor : AUTHOR COLON noWikiText'''
-	#TODO: Complete this function
+	t[0] = t[3]
 
 def p_nText(t):
 	'''nText : TEXT COLON wikiText'''
-	#TODO: Complete this function
+	t[0] = t[3]
 
 def p_wText(t):
 	'''wText : NAME
@@ -231,12 +228,13 @@ def p_wText(t):
 				| session
 				| indent
 				'''
-	#TODO: Complete this function
+	NO_SPACE = ['(',')','/','"',"'",'-','.',',']
+	t[0] = (' ' if t[1] not in NO_SPACE else '') + unicode(t[1])
 
 def p_wikiText(t):
 	'''wikiText : wikiText wText
 				| wText'''
-	#TODO: Complete this function
+	t[0] = ''.join([t[1],t[2]]) if len(t) == 3 else t[1]
 
 def p_noWText(t):
 	'''noWText : NAME
@@ -252,17 +250,17 @@ def p_noWText(t):
 				| DQUOTE
 				| DASH
 				'''
-	#TODO: Complete this function
+	NO_SPACE = ['(',')','/','"',"'",'-','.',',']
+	t[0] = (' ' if t[1] not in NO_SPACE else '') + unicode(t[1])
 
 def p_noWikiText(t):
 	'''noWikiText : noWikiText noWText
 				| noWText'''
-	#TODO: Complete this function
+	t[0] = ''.join([t[1],t[2]]) if len(t) == 3 else t[1]
 
 def p_link(t):
 	'''link : LBRACK URL PIPE noWikiText RBRACK'''
-	t[0] = '<a href="' + t[2] +  '"></a>'
-	#TODO: Complete this function
+	t[0] = '<a href="%s">%s</a>' % (t[2], t[3])
 
 def p_session(t):
 	'''session : SESSION_EQUAL nSession EQUAL'''
@@ -363,5 +361,5 @@ if __name__ == '__main__':
 	# Execute parse
 	yacc.yacc()
 	result = yacc.parse(open(f).read().decode('utf-8'))
-	print result
+	print result.encode('utf-8')
 ################################### FINISHED PARSE ###################################
