@@ -288,8 +288,11 @@ def p_link(t):
 
 def p_session(t):
 	'''session : SESSION_EQUAL nSession EQUAL'''
-	t[0] = t[1] + t[2] + t[3]
-	#TODO: Fixed this function
+	text = t[1] + t[2] + t[3]
+	n = text.count('=')/2
+	text = text.replace('=','')
+
+	t[0] = '<h%s> %s </h%s>' % (str(n), text, str(n))
 
 def p_nSession(t):
 	'''nSession : EQUAL nSession EQUAL
@@ -298,7 +301,6 @@ def p_nSession(t):
 		t[0] = t[1] + t[2] + t[3]
 	else:
 		t[0] = t[1]
-	#TODO: Fixed this function
 
 def p_indent(t):
 	'''indent : INDENT_COLON nIndent'''
