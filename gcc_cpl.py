@@ -351,7 +351,6 @@ def p_range(t):
 def p_define_item(t):
 	'''define_item : define_item ditem
 					| ditem'''
-	a
 
 def p_ditem(t):
 	'''ditem : NAME POINT TITLE
