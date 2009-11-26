@@ -203,7 +203,6 @@ def p_nDate(t):
 	t[0] = dict()
 	t[0]['type'] = 'date'
 	t[0]['value'] = t[3]
-	#TODO: Complete this function
 
 def p_nAbstract(t):
 	'''nAbstract : ABSTRACT COLON noWikiText'''
@@ -215,7 +214,7 @@ def p_nImage(t):
 	'''nImage : IMAGE COLON POINT BAR noWikiText POINT PHOTO_EXT'''
 	t[0] = dict()
 	t[0]['type'] = 'image'
-	t[0]['value'] = t[3] + t[4] + t[5] + t[6] + t[7]
+	t[0]['value'] = (t[3] + t[4] + t[5] + t[6] + t[7]).replace(' ','')
 
 def p_nSource(t):
 	'''nSource : SOURCE COLON noWikiText
@@ -289,21 +288,29 @@ def p_link(t):
 
 def p_session(t):
 	'''session : SESSION_EQUAL nSession EQUAL'''
-	#TODO: Complete this function
+	t[0] = t[1] + t[2] + t[3]
+	#TODO: Fixed this function
 
 def p_nSession(t):
 	'''nSession : EQUAL nSession EQUAL
 				| wikiText'''
-	#TODO: Complete this function
+	if len(t) == 4:
+		t[0] = t[1] + t[2] + t[3]
+	else:
+		t[0] = t[1]
+	#TODO: Fixed this function
 
 def p_indent(t):
 	'''indent : INDENT_COLON nIndent'''
-	#TODO: Complete this function
+	t[0] = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;%s' % t[2]
 
 def p_nIndent(t):
 	'''nIndent : COLON nIndent
 				| wikiText'''
-	#TODO: Complete this function
+	if len(t) == 3:
+		t[0] = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;%s' % t[2]
+	else:
+		t[0] = t[1]
 
 #### STRUCTURE DEFINE ####
 def p_nStructure(t):
@@ -351,6 +358,9 @@ def p_range(t):
 def p_define_item(t):
 	'''define_item : define_item ditem
 					| ditem'''
+	if len(t) == 3:
+		t[1].extend(t[2])
+	t[0] = t[1]
 
 def p_ditem(t):
 	'''ditem : NAME POINT TITLE
@@ -360,7 +370,10 @@ def p_ditem(t):
 				| NAME POINT DATE
 				| NAME POINT AUTHOR
 				| NAME POINT TEXT'''
-	#TODO: Complete this function
+	info_item = dict()
+	info_item['object'] = t[1]
+	info_item['attr'] = t[3]
+	t[0] = [info_item]
 
 def p_error(t):
 	print "Syntax error at '%s'" % t.value
