@@ -349,6 +349,7 @@ def p_nItem(t):
 	item = dict()
 	item['range'] = t[3]
 	item['define'] = t[6]
+	t[0] = [item]
 
 def p_range(t):
 	'''range : NUMBER COLON NUMBER
